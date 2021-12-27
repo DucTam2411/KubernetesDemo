@@ -3,7 +3,7 @@ import {
     requireAuth,
     NotFoundError,
     NotAuthorizedError,
-} from '@cygnetops/common';
+} from '@ductam2943/common';
 import { Order } from '../models/order';
 
 const router = express.Router();

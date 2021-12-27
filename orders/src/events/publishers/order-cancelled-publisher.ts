@@ -1,5 +1,5 @@
-import { Subjects, Publisher, OrderCancelledEvent } from '@cygnetops/common';
+import { Subjects, Publisher, OrderCancelledEvent } from '@ductam2943/common';
 
 export class OrderCancelledPublisher extends Publisher<OrderCancelledEvent> {
-  subject: Subjects.OrderCancelled = Subjects.OrderCancelled;
+    subject: Subjects.OrderCancelled = Subjects.OrderCancelled;
 }

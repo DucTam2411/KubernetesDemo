@@ -1,15 +1,15 @@
-apiVersion: skaffold/v2alpha3
+apiVersion: skaffold/v2beta22
 kind: Config
 deploy:
   kubectl:
     manifests:
       - ./infra/k8s/*
 build:
-  # local:
-  #   push: false
-  googleCloudBuild:
-    concurrency: 3
-    projectId: fit-entity-332314
+  local:
+    push: true
+    concurrency: 5
+  # googleCloudBuild:
+  #   projectId: fit-entity-332314
   artifacts:
     - image: ductam2943/auth
       context: auth
@@ -19,6 +19,7 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+
     - image: ductam2943/client
       context: client
       docker:
@@ -27,6 +28,7 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+
     - image: ductam2943/tickets
       context: tickets
       docker:
@@ -35,6 +37,7 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+
     - image: ductam2943/orders
       context: orders
       docker:
@@ -43,6 +46,7 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+
     - image: ductam2943/expirations
       context: expiration
       docker:
@@ -51,6 +55,7 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+
     - image: ductam2943/payments
       context: payments
       docker:

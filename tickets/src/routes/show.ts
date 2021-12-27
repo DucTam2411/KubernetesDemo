@@ -1,17 +1,34 @@
 import express, { Request, Response } from 'express';
-import { NotFoundError } from '@cygnetops/common';
+import {
+    currentUser,
+    NotFoundError,
+    requireAuth,
+    validateRequest,
+} from '@ductam2943/common';
 import { Ticket } from '../models/ticket';
 
 const router = express.Router();
 
 router.get('/api/tickets/:id', async (req: Request, res: Response) => {
-  const ticket = await Ticket.findById(req.params.id);
+    const tickets = await Ticket.findById(req.params.id);
 
-  if (!ticket) {
-    throw new NotFoundError();
-  }
+    if (!tickets) {
+        throw new NotFoundError();
+    }
 
-  res.send(ticket);
+    res.send(tickets);
 });
+
+router.get(
+    '/api/tickets/stock',
+    requireAuth,
+    async (req: Request, res: Response) => {
+        const tickets = await Ticket.find({
+            userId: req.currentUser!.id,
+        });
+
+        res.send(tickets);
+    }
+);
 
 export { router as showTicketRouter };
