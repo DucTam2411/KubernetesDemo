@@ -1,6 +1,6 @@
 {
   "name": "@ductam2943/common",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -8,15 +8,15 @@
     "build/**/*"
   ],
   "scripts": {
-    "clean": "del ./build/*",
-    "build": "npm run clean && tsc",
+    "clean": "del /build/*",
+    "build": "tsc",
     "pub": "git add . && git commit -m \"Updates\" && npm version patch && npm run build && npm publish"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "del-cli": "^4.0.0",
+    "del-cli": "^4.0.1",
     "typescript": "^4.3.2"
   },
   "dependencies": {
