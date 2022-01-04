@@ -1,41 +1,14 @@
 // import Router from 'next/router';
 // import useRequest from '../../hooks/use-request';
 
-// const MyTicket = ({ ticket }) => {
-//     const { doRequest, errors } = useRequest({
-//         url: '/api/orders',
-//         method: 'post',
-//         body: {
-//             ticketId: ticket.id,
-//         },
-//         onSuccess: (order) =>
-//             Router.push('/orders/[orderId]', `/orders/${order.id}`),
-//     });
-
-//     return (
-//         <div>
-//             <h1>{ticket.title}</h1>
-//             <h4>Price: {ticket.price}</h4>
-//             {errors}
-//             <button onClick={() => doRequest()} className="btn btn-primary">
-//                 Purchase
-//             </button>
-//         </div>
-//     );
-// };
-
-// MyTicket.getInitialProps = async (context, client) => {
-//     const { ticketId } = context.query;
-//     const { data } = await client.get(`/api/tickets/${ticketId}`);
-
-//     return { ticket: data };
-// };
-
-// export default MyTicket;
-
-// import Router from 'next/router';
+import Link from 'next/link';
 
 const MyTicket = ({ tickets }) => {
+    const linkStyle = {
+        color: 'black',
+        textDecorationLine: 'none',
+    };
+
     const ticketList = tickets.map((ticket) => {
         return (
             <tr key={ticket.id}>
@@ -43,10 +16,10 @@ const MyTicket = ({ tickets }) => {
                 <td>{ticket.price}</td>
                 <td>
                     <Link
-                        href="/tickets/[ticketId]"
-                        as={`/tickets/${ticket.id}`}
+                        href="/tickets/view/[ticketId]"
+                        as={`/tickets/view/${ticket.id}`}
                     >
-                        <a>View</a>
+                        <a style={linkStyle}>View</a>
                     </Link>
                 </td>
             </tr>
@@ -54,14 +27,23 @@ const MyTicket = ({ tickets }) => {
     });
 
     return (
-        <div className="container mt-3">
-            <h1>Tickets</h1>
-            <table className="table">
+        <div className="container mt-5 ms-3 font-monospace">
+            <h1 className="display-5 font-monospace ms-0 ps-0 ">
+                Your selling tickets
+            </h1>
+
+            <table className="table font-monospace">
                 <thead>
                     <tr>
-                        <th>Title</th>
-                        <th>Price</th>
-                        <th>Link</th>
+                        <th className="font-monospace ms-0 ps-0 fw-bold fs-5">
+                            Title
+                        </th>
+                        <th className="font-monospace ms-0 ps-0 fw-bold fs-5">
+                            Price
+                        </th>
+                        <th className="font-monospace ms-0 ps-0 fw-bold fs-5">
+                            Link
+                        </th>
                     </tr>
                 </thead>
                 <tbody>{ticketList}</tbody>
@@ -71,9 +53,6 @@ const MyTicket = ({ tickets }) => {
 };
 
 MyTicket.getInitialProps = async (context, client, currentUser) => {
-    // const { ticketId } = context.query;
-    // const { data } = await client.get(`/api/tickets/${ticketId}`);
-
     const { data } = await client.get('/api/tickets/stock');
 
     return {

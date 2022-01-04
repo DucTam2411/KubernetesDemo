@@ -1,16 +1,14 @@
 import Link from 'next/link';
 
-const OrderIndex = ({ orders }) => {
-    const cardStyle = {
-        width: '18rem',
-    };
-    const linkStyle = {
+const OrderIndex = ({ orders, currentUser }) => {
+    const linkStyleNormal = {
         color: 'black',
         textDecorationLine: 'none',
     };
 
-    const listStyle = {
-        listStyle: 'none',
+    const linkPayStyle = {
+        color: 'red',
+        textDecorationLine: 'none',
     };
     return (
         <div className="container ms-3 my-5 ">
@@ -36,7 +34,7 @@ const OrderIndex = ({ orders }) => {
                 <tbody>
                     {orders.map((order) => {
                         return (
-                            <tr key={order.ticket.id}>
+                            <tr key={order.id}>
                                 <td className="font-monospace">
                                     {order.ticket.title}
                                 </td>
@@ -50,14 +48,28 @@ const OrderIndex = ({ orders }) => {
                                 </td>
                                 <td>
                                     <Link
-                                        href="/tickets/[ticketId]"
-                                        as={`/tickets/${order.ticket.id}`}
+                                        href={
+                                            order.status === 'created'
+                                                ? '/orders/[orderId]'
+                                                : '/tickets/view/[ticketId]'
+                                        }
+                                        as={
+                                            order.status === 'created'
+                                                ? `/orders/${order.id}`
+                                                : `/tickets/view/${order.ticket.id}`
+                                        }
                                     >
                                         <a
                                             className="font-monospace"
-                                            style={linkStyle}
+                                            style={
+                                                order.status === 'created'
+                                                    ? linkPayStyle
+                                                    : linkStyleNormal
+                                            }
                                         >
-                                            View
+                                            {order.status === 'created'
+                                                ? 'Pay'
+                                                : 'View'}
                                         </a>
                                     </Link>
                                 </td>
@@ -70,10 +82,12 @@ const OrderIndex = ({ orders }) => {
     );
 };
 
-OrderIndex.getInitialProps = async (context, client) => {
+OrderIndex.getInitialProps = async (context, client, currentUser) => {
     const { data } = await client.get('/api/orders');
 
-    return { orders: data };
+    data.reverse();
+    data.length = Math.min(data.length, 40);
+    return { orders: data, currentUser: currentUser };
 };
 
 export default OrderIndex;

@@ -5,9 +5,22 @@ import {
     requireAuth,
     validateRequest,
 } from '@ductam2943/common';
-import { Ticket } from '../models/ticket';
+import { mongoose, Ticket } from '../models/ticket';
 
 const router = express.Router();
+
+router.get(
+    '/api/tickets/stock',
+    currentUser,
+    requireAuth,
+    async (req: Request, res: Response) => {
+        const tickets = await Ticket.find({
+            userId: req.currentUser?.id,
+        });
+
+        res.send(tickets);
+    }
+);
 
 router.get('/api/tickets/:id', async (req: Request, res: Response) => {
     const tickets = await Ticket.findById(req.params.id);
@@ -18,17 +31,5 @@ router.get('/api/tickets/:id', async (req: Request, res: Response) => {
 
     res.send(tickets);
 });
-
-router.get(
-    '/api/tickets/stock',
-    requireAuth,
-    async (req: Request, res: Response) => {
-        const tickets = await Ticket.find({
-            userId: req.currentUser!.id,
-        });
-
-        res.send(tickets);
-    }
-);
 
 export { router as showTicketRouter };

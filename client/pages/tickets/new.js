@@ -5,19 +5,20 @@ import useRequest from '../../hooks/use-request';
 const NewTicket = () => {
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
+    const [description, setDescription] = useState('');
     const { doRequest, errors } = useRequest({
         url: '/api/tickets',
         method: 'post',
         body: {
             title,
             price,
+            description,
         },
         onSuccess: () => Router.push('/'),
     });
 
     const onSubmit = (event) => {
         event.preventDefault();
-
         doRequest();
     };
 
@@ -37,12 +38,12 @@ const NewTicket = () => {
                 Create a Ticket
             </h1>
             <form onSubmit={onSubmit}>
-                <div className="form-group ms-3 font-monospace">
+                <div className="form-group ms-3 mt-2 font-monospace">
                     <label className="h4">Title</label>
                     <input
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        className="form-control font-monospace"
+                        className="form-control font-monospace rounded-0 w-50"
                     />
                 </div>
                 <div className="form-group my-3 ms-3 font-monospace">
@@ -51,11 +52,22 @@ const NewTicket = () => {
                         value={price}
                         onBlur={onBlur}
                         onChange={(e) => setPrice(e.target.value)}
-                        className="form-control font-monospace"
+                        className="form-control font-monospace  rounded-0 w-50"
                     />
                 </div>
+
+                <div className="form-group my-3 ms-3 font-monospace">
+                    <label className="h4">Description</label>
+                    <input
+                        value={description}
+                        onBlur={onBlur}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="form-control font-monospace  rounded-0 w-50"
+                    />
+                </div>
+
                 {errors}
-                <button className="btn btn-dark ms-3 font-monospace">
+                <button className="btn btn-dark rounded-0 mt-2 py-3 fs-5 w-25 ms-3 font-monospace">
                     Submit
                 </button>
             </form>

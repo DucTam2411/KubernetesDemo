@@ -12,8 +12,8 @@ const LandingPage = ({ currentUser, tickets }) => {
                 <td className="font-monospace">{ticket.price}</td>
                 <td>
                     <Link
-                        href="/tickets/[ticketId]"
-                        as={`/tickets/${ticket.id}`}
+                        href="/tickets/view/[ticketId]"
+                        as={`/tickets/view/${ticket.id}`}
                     >
                         <a className="font-monospace" style={linkStyle}>
                             View
